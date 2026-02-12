@@ -224,8 +224,8 @@ def main():
     bullets = []
     if args.file:
         bullets = read_bullets_from_file(args.file)
-    elif args.bullet:
-        bullets = [args.bullet]
+    elif args.bullets:
+        bullets = args.bullets
     else:
         parser.error("Provide a bullet or --file")
 

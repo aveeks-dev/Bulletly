@@ -1,98 +1,78 @@
-# resume-bullet-rewriter
+# Bulletly
 
-A small CLI tool that rewrites resume bullets into multiple strong variants while preserving truth and avoiding invention.
+A CLI tool for analyzing and improving resume bullets. Bulletly evaluates your bullets for impact, clarity, and ATS optimization, then generates alternative versions tailored to different roles and writing styles.
 
 ## Features
 
-- Rewrite a single bullet or a file of bullets into multiple variants
-- Optional dry-run (fully local) for testing without an API key
-- Preserves metrics when requested; never invents numbers
-- Adds quick critique, clarifying questions (if needed), and best-pick ranking
+- **Bullet Assessment**: Get immediate feedback on strength and areas for improvement
+- **Multi-format Generation**: Generate variants optimized for ATS, impact, technical depth, or leadership focus
+- **Metric Preservation**: Maintains existing metrics and never invents claims
+- **Flexible I/O**: Process single bullets, files, or batch operations with JSON output support
+- **Local Mode**: Run `--dry-run` for deterministic suggestions without API calls
 
-## Setup
-
-1. Create a virtual environment and activate it:
+## Installation
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-```
-
-2. Install requirements:
-
-```bash
 pip install -r requirements.txt
 ```
 
-3. Set your API key (or use `--dry-run` for local testing):
+Set your API key:
 
 ```bash
-export GROQ_API_KEY=your_key_here
-# or copy .env.example to .env and edit
+export GROQ_API_KEY=<your-key>
+# or copy .env.example to .env
 ```
 
-## Usage
+## Quick Start
 
 Single bullet:
 
 ```bash
-python -m resume_bullet_rewriter "Built data pipeline to ingest logs" \
+python -m resume_bullet_rewriter "Built ETL pipeline to process 2M+ daily events" \
   --role "Data Engineer" \
-  --seniority "Senior" \
-  --style "ats" \
-  --tone "confident" \
-  --keep-metrics \
-  --n 6 \
-  --format markdown
+  --style impact \
+  --n 3 \
+  --format json
 ```
 
-File mode (one bullet per line):
+Batch processing from file:
 
 ```bash
-python -m resume_bullet_rewriter --file bullets.txt --role "Data Engineer" --dry-run
+python -m resume_bullet_rewriter --file bullets.txt --role "Senior Engineer" --format json --save output.json
+```
+
+Local mode (no API key required):
+
+```bash
+python -m resume_bullet_rewriter "Led platform migration" --dry-run --style impact
+```
+
+## Output Format
+
+Each bullet generates:
+
+```json
+{
+  "verdict": "good|needs_improvement",
+  "feedback": "strengths and areas for improvement",
+  "clarifying_questions": ["optional questions if vague"],
+  "suggestions": ["rewrite 1", "rewrite 2", "..."]
+}
 ```
 
 ## Styles
 
-- ats: clear, keyword-friendly; concise and scan-friendly
-- impact: emphasizes outcomes and business impact
-- tech: highlights technical approach and tools
-- leadership: focuses on influence, mentorship, and strategy
-- concise: short, punchy bullets
+- **ats**: ATS-friendly, keyword-optimized for scanning
+- **impact**: Results-focused, emphasizes business outcomes
+- **tech**: Technical depth, highlights tools and systems
+- **leadership**: Influence and scope, mentorship and strategy
+- **concise**: Short, punchy, executive summary style
 
-## Notes
+## Development
 
-- The tool aims to be truthful: it will not invent numbers or claims. Use `--keep-metrics` to preserve numbers exactly (if present); otherwise numbers will not be added.
-- Use `--dry-run` to test locally without an API key. This uses deterministic templates.
-
-## Quick usage (focused)
-
-Now the CLI focuses on assessing bullets and offering improvements.
-
-Examples:
-
-```bash
-# Assess one or more bullets (positional args) — default 2 suggestions when needed
-python -m resume_bullet_rewriter "Built ETL pipeline to ingest logs" "Led migration of legacy ETL" --dry-run --style impact --tone confident --n 2 --format json
-
-# File mode (one bullet per line):
-python -m resume_bullet_rewriter --file bullets.txt --dry-run --n 2 --format json --save out.json
-```
-
-The output for each bullet includes:
-- `verdict`: `good` or `needs_improvement`
-- `feedback`: short notes on strengths/weaknesses
-- `clarifying_questions`: when the bullet is too vague
-- `suggestions`: suggested rewrites (when `needs_improvement`)
-
-Note: The built-in demo was removed to simplify the repo; run the CLI with `--dry-run` for local deterministic suggestions.
----
-
-(Implementation and tests are included in the `src/` and `tests/` folders.)
-
-## Running tests
-
-Install test requirements and run pytest:
+Run tests:
 
 ```bash
 pip install pytest
