@@ -1,16 +1,40 @@
 # Bulletly
 
-A CLI tool for analyzing and improving resume bullets. Bulletly evaluates your bullets for impact, clarity, and ATS optimization, then generates alternative versions tailored to different roles and writing styles.
+A CLI tool for analyzing and improving resume bullets. Bulletly evaluates your bullets for impact and clarity, then generates better alternatives. Powered by [Groq AI](https://groq.com/).
 
 ## Features
 
-- **Bullet Assessment**: Get immediate feedback on strength and areas for improvement
-- **Multi-format Generation**: Generate variants optimized for ATS, impact, technical depth, or leadership focus
-- **Metric Preservation**: Maintains existing metrics and never invents claims
-- **Flexible I/O**: Process single bullets, files, or batch operations with JSON output support
-- **Local Mode**: Run `--dry-run` for deterministic suggestions without API calls
+- **Instant Assessment**: Get immediate feedback on bullet strength
+- **Smart Suggestions**: Groq-powered rewrites that preserve truth and metrics
+- **Interactive Mode**: Simple conversation-style interface—just type bullets and get results
+- **No Hallucinations**: Never invents metrics or false claims
+- **Local Testing**: `--dry-run` mode for offline testing without an API key
 
-## Installation
+## Quick Start
+
+Just run the tool and start entering bullets:
+
+```bash
+python -m resume_bullet_rewriter
+```
+
+Then paste bullets one at a time and get instant feedback:
+
+```
+Enter a resume bullet (or 'quit' to exit): Built ETL pipeline to process 10M records
+[Rating] needs_improvement
+[Feedback] Lacks outcome impact
+[Suggestions]
+- Reduced data processing time by 40% with optimized ETL pipeline
+- Architected scalable ETL system handling 10M+ daily records with 99.9% uptime
+
+Enter a resume bullet (or 'quit' to exit): Led team of 5 engineers
+[Rating] good
+[Feedback] Clear scope and impact
+[Done!]
+```
+
+## Setup
 
 ```bash
 python -m venv .venv
@@ -18,57 +42,34 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Set your API key:
+Set your Groq API key:
 
 ```bash
 export GROQ_API_KEY=<your-key>
-# or copy .env.example to .env
 ```
 
-## Quick Start
+Get a free API key at [console.groq.com](https://console.groq.com)
 
-Single bullet:
+## Options
+
+```
+--dry-run      Test locally without API key (deterministic suggestions)
+--role         Optional: your target role (e.g., "Data Engineer")
+```
+
+## Examples
+
+With a specific role:
 
 ```bash
-python -m resume_bullet_rewriter "Built ETL pipeline to process 2M+ daily events" \
-  --role "Data Engineer" \
-  --style impact \
-  --n 3 \
-  --format json
+python -m resume_bullet_rewriter --role "Senior Engineer"
 ```
 
-Batch processing from file:
+Offline testing:
 
 ```bash
-python -m resume_bullet_rewriter --file bullets.txt --role "Senior Engineer" --format json --save output.json
+python -m resume_bullet_rewriter --dry-run
 ```
-
-Local mode (no API key required):
-
-```bash
-python -m resume_bullet_rewriter "Led platform migration" --dry-run --style impact
-```
-
-## Output Format
-
-Each bullet generates:
-
-```json
-{
-  "verdict": "good|needs_improvement",
-  "feedback": "strengths and areas for improvement",
-  "clarifying_questions": ["optional questions if vague"],
-  "suggestions": ["rewrite 1", "rewrite 2", "..."]
-}
-```
-
-## Styles
-
-- **ats**: ATS-friendly, keyword-optimized for scanning
-- **impact**: Results-focused, emphasizes business outcomes
-- **tech**: Technical depth, highlights tools and systems
-- **leadership**: Influence and scope, mentorship and strategy
-- **concise**: Short, punchy, executive summary style
 
 ## Development
 

@@ -1,3 +1,3 @@
-from .main import main, rewrite_bullet
+from .main import main, assess_bullet
 
-__all__ = ["main", "rewrite_bullet"]
+__all__ = ["main", "assess_bullet"]
