@@ -2,9 +2,9 @@ import json
 import os
 from typing import List
 
-from resume_bullet_rewriter.prompts import build_messages
-from resume_bullet_rewriter.schema import BulletFeedback, validate_feedback
-from resume_bullet_rewriter.utils import (
+from .prompts import build_messages
+from .schema import BulletFeedback, validate_feedback
+from .utils import (
     anonymize_sensitive,
     contains_banned_word,
     quick_critique,
