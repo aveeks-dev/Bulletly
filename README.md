@@ -95,3 +95,4 @@ pip install -e .
 # then run with script name
 resume-bullet-rewriter "Built something" --dry-run
 ```
+# Updated Wed Feb 11 23:11:17 EST 2026
