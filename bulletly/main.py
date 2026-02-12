@@ -19,8 +19,15 @@ DEFAULT_MODEL = "llama-3.3-70b-versatile"
 
 def dry_run_suggestions(bullet: str) -> List[str]:
     """Generate deterministic suggestions without API calls."""
+    import re
     verbs = ["Improved", "Engineered", "Optimized", "Delivered"]
-    impacts = ["by 30%", "resulting in better outcomes", "with measurable impact"]
+    # Only use numeric impacts if original has numbers (don't invent metrics)
+    has_numbers = bool(re.search(r"\d", bullet))
+    if has_numbers:
+        impacts = ["by 30%", "resulting in better outcomes", "with measurable impact"]
+    else:
+        impacts = ["resulting in better outcomes", "with measurable impact", "increasing efficiency"]
+    
     suggestions = [
         f"{verbs[0]} {bullet.lower()} {impacts[0]}",
         f"{verbs[1]} {bullet.lower()} {impacts[1]}",
